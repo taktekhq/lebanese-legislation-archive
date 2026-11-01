@@ -13,6 +13,9 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-24.04
+    # The token lives only in this environment, which deploys from main only, and is
+    # scoped on Hugging Face to this one dataset (write), nothing else.
+    environment: huggingface
     timeout-minutes: 120
     steps:
       - name: Make room for the 18 GB checkout
@@ -39,7 +42,6 @@ jobs:
           from huggingface_hub import HfApi
           api = HfApi(token=os.environ["HF_TOKEN"])
           repo = "taktekhq/lebanese-legislation-archive"
-          api.create_repo(repo, repo_type="dataset", private=False, exist_ok=True)
           api.upload_folder(repo_id=repo, repo_type="dataset", folder_path=os.path.join(os.environ["RUNNER_TEMP"], "hf"),
                             commit_message=f"Archive at {os.environ['GITHUB_SHA'][:12]}")
           PY
