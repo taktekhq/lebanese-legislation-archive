@@ -1,0 +1,3 @@
+# The pages as served: keep them out of the language stats and collapse their diffs.
+*.html linguist-generated=true
+*.tsv linguist-generated=true
